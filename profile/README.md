@@ -2,26 +2,50 @@
 
 <h1 align="center">Scion Project</h1>
 
-<p align="center">Apple's open-source XNU kernel and iOS user space, grafted onto Android hardware.</p>
+<p align="center"><b>iOS 16.5 on Android phones</b>, on Apple's open-source XNU kernel and our own drivers.<br>An experiment you build yourself from your own copy of iOS. These repositories contain no Apple software.</p>
 
-A *scion* is a cutting grafted onto another plant's rootstock. That is the idea here: the iPhone's software stack, running on phones it was never made for — with our own drivers underneath, and none of Apple's software in these repositories. Every image is built locally from your own IPSW.
+<p align="center"><a href="https://scion-project.github.io"><b>scion-project.github.io</b></a></p>
 
-### HakiOS — Exynos 9810 (Galaxy S9 / S9+ / Note9)
+## Phones
 
-XNU booted straight on the hardware, with iOS 16.5 on top. On the Galaxy S9 today: all six usable cores with DVFS and thermal throttling, the AMOLED panel through the display controller's hardware scaler, touch, Mali-G72 GPU via Mesa Panfrost, native UFS storage with a persistent data volume, Wi-Fi joined from iOS Settings, the speakers, the front camera in the stock Camera app, the brightness slider, haptics, battery, and a USB log and console. Bluetooth, sensors, the microphone path, the modem and more are in progress.
+| Phone | State | What to expect |
+|---|---|---|
+| **Galaxy S9** (SM-G960F, Exynos) | **Works** | iOS runs directly on the phone, with no emulator: all eight cores, touch, GPU, Wi-Fi, speakers, microphone, front camera, Bluetooth, sensors, battery. Tested on only a few phones so far |
+| **Galaxy S9+** (SM-G965F) and **Note9** (SM-N960F) | **Unproven** | Nobody has run them. The installer does a 2-minute first run that collects a log, then returns to TWRP |
+| **Pixel 10** | **Virtual machine, in progress** | iOS in a VM through the [Scion app](https://github.com/Scion-Project/scion). It reaches the home screen; touch was still being fixed at its last status. No ready-made install for other owners yet |
+
+## Install on a Galaxy S9
+
+You need an unlocked bootloader, TWRP, a computer and your own iOS 16.5 IPSW.
+
+1. **Back up** Boot, System and EFS in TWRP, and copy the backup to a computer.
+2. **Build the installer** on your computer with [scion-installer](https://github.com/Scion-Project/scion-installer).
+3. **Flash the zip** in TWRP and reboot to System.
+
+## Known issues
+
+- One tester has reported the phone restarting by itself. The cause isn't known yet.
+- No mobile network: no cellular data, calls or SMS.
+- No rear cameras, and no headphones.
+- No App Store, Apple ID, iCloud or iMessage.
+- Settings are lost at each restart unless USERDATA is formatted for Scion, which erases Android's data.
+- The passcode protects keychain items only. Your files aren't encrypted.
+
+Something went wrong, or it worked? [Report a bug or send a tester report](https://github.com/Scion-Project/scion-kernel/issues/new/choose), with your model and `last_kmsg`. [How to save the logs](https://github.com/Scion-Project/scion-kernel#send-logs).
+
+## Repositories
 
 | Repository | What it is |
 |---|---|
-| [hackios-xnu-kernel](https://github.com/Scion-Project/hackios-xnu-kernel) | The kernel, drivers, boot loader and tools (common to every device) |
-| [hakios-starlte](https://github.com/Scion-Project/hakios-starlte) | Galaxy S9 device repository: configs, firmware facts, docs, porting record |
-| [hakios-star2lte](https://github.com/Scion-Project/hakios-star2lte) · [hakios-crownlte](https://github.com/Scion-Project/hakios-crownlte) | Galaxy S9+ and Note9 (written, not yet run) |
-| [scion-packaging](https://github.com/Scion-Project/scion-packaging) | Universal TWRP installer (tooling only) |
-| [scion-recovery](https://github.com/Scion-Project/scion-recovery) | TWRP repurposed for HakiOS: APFS / HFS+ tools, log capture |
-
-### Scion — Pixel 10
-
-The same stack on the Google Pixel 10, emulated ([pyre](https://github.com/Scion-Project/pyre), a fast Apple-silicon emulator) or virtualised on the phone's own hypervisor ([scion-avf](https://github.com/Scion-Project/scion-avf)), from the [Scion](https://github.com/Scion-Project/scion) app.
+| [scion-installer](https://github.com/Scion-Project/scion-installer) | **Start here:** builds the TWRP installer on your computer (tooling only) |
+| [scion-kernel](https://github.com/Scion-Project/scion-kernel) | The kernel, drivers, boot loader and tools; a fork of [HakiOS](https://github.com/oosexgang/hakios-xnu-kernel) |
+| [scion-starlte](https://github.com/Scion-Project/scion-starlte) | Galaxy S9 device files and porting record |
+| [scion-star2lte](https://github.com/Scion-Project/scion-star2lte) · [scion-crownlte](https://github.com/Scion-Project/scion-crownlte) | Galaxy S9+ and Note9 device files (never run) |
+| [scion](https://github.com/Scion-Project/scion) · [scion-avf](https://github.com/Scion-Project/scion-avf) · [pyre](https://github.com/Scion-Project/pyre) | Pixel 10: the app, its VM backend and its emulator |
+| [scion-recovery](https://github.com/Scion-Project/scion-recovery) | TWRP with extras for developers: APFS and HFS+ tools, log capture |
 
 ---
+
+A *scion* is a cutting grafted onto another plant's rootstock.
 
 Built on the work of the [HakiOS](https://github.com/oosexgang) and [ChefKiss](https://github.com/ChefKissInc) projects, Project Silicium, and the Exynos 9810 mainline community. Not affiliated with Apple, Samsung or Google.
