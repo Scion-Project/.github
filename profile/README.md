@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: MIT-0 -->
 <p align="center"><img src="scion-logo.png" width="140" alt="Scion"></p>
 
 <h1 align="center">Scion Project</h1>
